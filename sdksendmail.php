@@ -1,7 +1,7 @@
 <?php
 // SES SendMail demo
 // Using AWS SDK for PHP V3
-// -KM
+// -kyle138
 
 require(dirname(__FILE__).'/include/aws/aws-autoloader.php');
 require(dirname(__FILE__).'/sescredentials.php');
@@ -40,13 +40,12 @@ function Send_Mail($from,$fromH=NULL,$to=[],$cc=[],$bcc=[],$subject,$bodyH,$body
 
   //Create AWS connection and SesClient
   $SesClient = new Aws\Ses\SesClient([
-    'version'   =>  'latest',
-    'region'    =>  'us-east-1',
+    'version'   =>  'latest',     // I'm told that using 'latest' is dangerous,
+    'region'    =>  'us-east-1',  // Danger is my middle name.  o.O
     'credentials' =>  $credentials
   ]);
 
   $result = $SesClient->sendEmail([
-    //'Destination' => $destination,
     'Destination' => [
       'BccAddresses' => $bccAdrs,
       'CcAddresses' => $ccAdrs,
@@ -61,7 +60,6 @@ function Send_Mail($from,$fromH=NULL,$to=[],$cc=[],$bcc=[],$subject,$bodyH,$body
     'Source' => $sourceAdrs,
   ]);
 //  echo "Result: $result\r\n";   //DEBUG
-//  echo "Result['MessageId']: ".$result['MessageId']."\r\n";   //DEBUG
 
   return $result['MessageId'];
 }
